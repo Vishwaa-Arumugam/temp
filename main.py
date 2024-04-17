@@ -45,7 +45,7 @@ def twitConnection1():
 def get_image(i):
     repo_owner = "Vishwaa-Arumugam"
     repo_name = "temp"
-    file_path = f"extracted_frames/frame_{i}.jpg"
+    file_path = f"extracted_frames{i//1000}/frame_{i}.jpg"
     print(file_path)
 
     api_url = (
@@ -69,6 +69,8 @@ def get_image(i):
     else:
         print("Failed to fetch file metadata.")
 
+    return "downloaded_image.jpg"
+
 
 if __name__ == "__main__":
 
@@ -76,11 +78,13 @@ if __name__ == "__main__":
 
     client1 = twitConnection1()
 
-    with open("data.txt", "r") as file:
+    # Opening file to keep track of which frame to upload
+    with open("data.txt", "a") as file:
         # mymedia=r'C:\Users\vijay\OneDrive - SSN Trust\Desktop\SSN\sem 6\tweepy folder\images.jpeg'
         data = file.read()
         i = int(data)
 
+    # loading the frame onto the media
     media = client1.media_upload(filename=get_image(i))
     media_id = media.media_id
 
@@ -89,4 +93,4 @@ if __name__ == "__main__":
     response = client.create_tweet(text=msg, media_ids=[media_id])
 
     with open("data.txt", "w") as file:
-        file.write(i + 1)
+        file.write(str(i + 1))
